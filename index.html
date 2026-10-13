@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title id="docTitle">استبيان فحص سرطان البروستاتا | Prostate Cancer Screening Survey</title>
+  <style>
+    :root {
+      --primary: #103b60;
+      --primary-dark: #0b253d;
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #cbd5e1;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --success: #15803d;
+      --error: #be123c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding: 16px 8px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 860px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+
+    /* الشريط العلوي */
+    .header-banner {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #ffffff;
+      padding: 22px 24px;
+    }
+
+    .lang-switcher-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .lang-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .banner-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    .banner-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #e2e8f0;
+      text-align: justify;
+    }
+
+    /* منطقة النماذج والبطاقات */
+    .content-area {
+      padding: 24px 20px;
+    }
+
+    .section-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--primary);
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    .question-block {
+      margin-bottom: 18px;
+    }
+
+    .question-label {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .text-input {
+      width: 100%;
+      max-width: 220px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .text-input:focus {
+      border-color: var(--accent);
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
+
+    .radio-card {
+      display: flex;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      background: #f8fafc;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .radio-card:hover {
+      border-color: var(--accent);
+      background: #f0f7fb;
+    }
+
+    .radio-card input[type="radio"] {
+      margin-inline-end: 10px;
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* تنسيق الجداول لشاشات سطح المكتب */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      margin-top: 6px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #1e293b;
+      font-weight: 600;
+    }
+
+    td.statement-col, th.statement-col {
+      text-align: start;
+      font-weight: 500;
+      width: 48%;
+      color: #334155;
+    }
+
+    td input[type="radio"] {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* تحويل الجداول ديناميكياً على شاشات الهواتف المحمولة */
+    @media (max-width: 768px) {
+      body { padding: 6px; }
+      .content-area { padding: 14px 10px; }
+      .section-card { padding: 14px 10px; }
+      table, thead, tbody, th, td, tr { display: block; }
+      thead { display: none; }
+      tr {
+        margin-bottom: 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        background: #fcfcfc;
+      }
+      td.statement-col {
+        width: 100% !important;
+        font-weight: 700;
+        font-size: 14px;
+        border: none;
+        padding: 4px 0 10px 0;
+        color: var(--primary);
+      }
+      td:not(.statement-col) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: none;
+        border-top: 1px dashed #e2e8f0;
+        padding: 8px 4px;
+        text-align: start;
+      }
+      td:not(.statement-col)::before {
+        content: attr(data-label);
+        font-weight: 600;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+    }
+
+    /* رسائل الإشعار وأزرار التحكم */
+    .branch-notice {
+      display: none;
+      padding: 18px;
+      border-radius: 8px;
+      margin-top: 12px;
+      font-weight: 600;
+      font-size: 14.5px;
+      text-align: center;
+    }
+
+    .branch-notice.warning {
+      background-color: #fff1f2;
+      color: var(--error);
+      border: 1px solid #fecdd3;
+    }
+
+    .branch-notice.success {
+      background-color: #f0fdf4;
+      color: var(--success);
+      border: 1px solid #bbf7d0;
+    }
+
+    .submit-container {
+      text-align: center;
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+
+    .submit-btn {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 14px 44px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      max-width: 320px;
+      transition: background 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .submit-btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- الترويسة الرئيسية -->
+  <div class="header-banner">
+    <div class="lang-switcher-wrapper">
+      <button type="button" class="lang-btn" id="langSwitcher" onclick="toggleLanguage()">Switch to English</button>
+    </div>
+    <h1 id="txtTitle" class="banner-title">استبيان: معرفة ومواقف وممارسات فحص سرطان البروستاتا بين الرجال في الرياض</h1>
+    <p id="txtDesc" class="banner-desc">
+      عزيزي المشارك، شكرًا لك على تخصيص وقتك للمشاركة في هذا الاستبيان. نحن طلاب طب من جامعة المعرفة نجري دراسة حول الفحص المبكر لسرطان البروستاتا واستخدام اختبار المستضد البروستاتي النوعي (PSA) في مدينة الرياض، المملكة العربية السعودية. مشاركتك مهمة لفهم المعرفة الحالية والمواقف والممارسات المتعلقة بفحص سرطان البروستاتا. يرجى الإجابة على الأسئلة التالية بصدق وبأفضل ما تستطيع. سيتم الحفاظ على سرية جميع إجاباتك واستخدامها فقط لأغراض البحث.
+    </p>
+  </div>
+
+  <form id="prostateSurveyForm" onsubmit="handleFormSubmit(event)">
+
+    <!-- قسم الموافقة المستنيرة (البوابة الأولى) -->
+    <div class="content-area" id="consentCard">
+      <div class="section-card">
+        <h2 class="section-title" id="txtConsentTitle">الموافقة المستنيرة على المشاركة</h2>
+        <div class="question-block">
+          <label class="question-label" id="txtConsentLabel">هل توافق على المشاركة التطوعية في هذا البحث؟</label>
+          <div class="options-grid">
+            <label class="radio-card">
+              <input type="radio" name="consent" value="1" required onchange="handleConsentChange(this.value)">
+              <span id="opt_consent_yes">نعم، أوافق على المشاركة</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="consent" value="0" onchange="handleConsentChange(this.value)">
+              <span id="opt_consent_no">لا أوافق</span>
+            </label>
+          </div>
+        </div>
+        <div id="consentDeclineNotice" class="branch-notice warning">
+          شكراً لوقتك، نتمنى لك دوام الصحة والعافية. تم إغلاق الاستبيان.
+        </div>
+      </div>
+    </div>
+
+    <!-- جسم الاستبيان النشط (يظهر فورياً عند اختيار نعم) -->
+    <div id="surveyBody" class="content-area" style="display: none; padding-top: 0;">
+
+      <!-- القسم الأول: المعلومات الديموغرافية -->
+      <div class="section-card">
+        <h2 class="section-title" id="s1_title">القسم الأول: المعلومات الديموغرافية</h2>
+        
+        <div class="question-block">
+          <label class="question-label" for="age" id="s1_q1">1. العمر (بالسنوات):</label>
+          <input type="number" id="age" name="age" class="text-input" min="18" max="100" required placeholder="سنة">
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q2">2. الجنس:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="gender" value="1" required><span id="opt_male">ذكر</span></label>
+            <label class="radio-card"><input type="radio" name="gender" value="2"><span id="opt_female">أنثى</span></label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q3">3. الجنسية:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="nationality" value="1"><span id="opt_saudi">سعودي</span></label>
+            <label class="radio-card"><input type="radio" name="nationality" value="2"><span id="opt_non_saudi">غير سعودي</span></label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q4">4. المستوى التعليمي:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="education" value="1"><span id="opt_edu1">شهادة ثانوية أو أقل</span></label>
+            <label class="radio-card"><input type="radio" name="education" value="2"><span id="opt_edu2">جامعي</span></label>
+            <label class="radio-card"><input type="radio" name="education" value="3"><span id="opt_edu3">دراسات عليا</span></label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q5">5. الحالة الاجتماعية:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="marital_status" value="1"><span id="opt_mar1">متزوج</span></label>
+            <label class="radio-card"><input type="radio" name="marital_status" value="2"><span id="opt_mar2">أعزب</span></label>
+            <label class="radio-card"><input type="radio" name="marital_status" value="3"><span id="opt_mar3">مطلق / منفصل</span></label>
+            <label class="radio-card"><input type="radio" name="marital_status" value="4"><span id="opt_mar4">أرمل</span></label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q6">6. حالة العمل:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="employment" value="1"><span id="opt_job1">موظف بدوام كامل</span></label>
+            <label class="radio-card"><input type="radio" name="employment" value="2"><span id="opt_job2">موظف بدوام جزئي</span></label>
+            <label class="radio-card"><input type="radio" name="employment" value="3"><span id="opt_job3">عاطل عن العمل</span></label>
+            <label class="radio-card"><input type="radio" name="employment" value="4"><span id="opt_job4">متقاعد</span></label>
+            <label class="radio-card"><input type="radio" name="employment" value="5"><span id="opt_job5">طالب</span></label>
+            <label class="radio-card"><input type="radio" name="employment" value="6"><span id="opt_job6">ربة منزل</span></label>
+          </div>
+        </div>
+
+        <div class="question-block">
+          <label class="question-label" id="s1_q7">7. التأمين الصحي:</label>
+          <div class="options-grid">
+            <label class="radio-card"><input type="radio" name="insurance" value="1"><span id="opt_ins_yes">نعم</span></label>
+            <label class="radio-card"><input type="radio" name="insurance" value="0"><span id="opt_ins_no">لا</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- القسم الثاني: المعرفة (8 عبارات) -->
+      <div class="section-card">
+        <h2 class="section-title" id="s2_title">القسم الثاني: معرفة سرطان البروستاتا</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="statement-col" id="col_statement_s2">البيان</th>
+                <th id="col_yes_s2">نعم</th>
+                <th id="col_no_s2">لا</th>
+                <th id="col_unsure_s2">غير متأكد</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="statement-col" id="k1">1. هل سمعت عن سرطان البروستاتا؟</td><td data-label="نعم"><input type="radio" name="k1_heard_pc" value="1"></td><td data-label="لا"><input type="radio" name="k1_heard_pc" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k1_heard_pc" value="9"></td></tr>
+              <tr><td class="statement-col" id="k2">2. هل يمكن أن يصاب الرجل بسرطان البروستاتا حتى إذا لم يكن لديه تاريخ عائلي للمرض؟</td><td data-label="نعم"><input type="radio" name="k2_no_family_hist" value="1"></td><td data-label="لا"><input type="radio" name="k2_no_family_hist" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k2_no_family_hist" value="9"></td></tr>
+              <tr><td class="statement-col" id="k3">3. هل يزداد خطر الإصابة بسرطان البروستاتا مع التقدم في العمر؟</td><td data-label="نعم"><input type="radio" name="k3_age_risk" value="1"></td><td data-label="لا"><input type="radio" name="k3_age_risk" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k3_age_risk" value="9"></td></tr>
+              <tr><td class="statement-col" id="k4">4. هل يزيد وجود قريب مصاب بسرطان البروستاتا من خطر إصابة الرجل؟</td><td data-label="نعم"><input type="radio" name="k4_relative_risk" value="1"></td><td data-label="لا"><input type="radio" name="k4_relative_risk" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k4_relative_risk" value="9"></td></tr>
+              <tr><td class="statement-col" id="k5">5. هل يمكن أن يكون سرطان البروستاتا في مراحله المبكرة موجودًا دون أعراض واضحة؟</td><td data-label="نعم"><input type="radio" name="k5_asymptomatic" value="1"></td><td data-label="لا"><input type="radio" name="k5_asymptomatic" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k5_asymptomatic" value="9"></td></tr>
+              <tr><td class="statement-col" id="k6">6. هل يمكن أن تنتج أعراض التبول عن أسباب غير سرطان البروستاتا؟</td><td data-label="نعم"><input type="radio" name="k6_urinary_causes" value="1"></td><td data-label="لا"><input type="radio" name="k6_urinary_causes" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k6_urinary_causes" value="9"></td></tr>
+              <tr><td class="statement-col" id="k7">7. هل يستدعي وجود دم في البول أو السائل المنوي تقييماً طبياً، دون أن يعني ذلك بالضرورة الإصابة بسرطان البروستاتا؟</td><td data-label="نعم"><input type="radio" name="k7_blood_assess" value="1"></td><td data-label="لا"><input type="radio" name="k7_blood_assess" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k7_blood_assess" value="9"></td></tr>
+              <tr><td class="statement-col" id="k8">8. هل اختبار مستضد البروستاتا النوعي (PSA) هو فحص دم، ولا تكفي النتيجة المرتفعة وحدها لتأكيد التشخيص؟</td><td data-label="نعم"><input type="radio" name="k8_psa_elevated" value="1"></td><td data-label="لا"><input type="radio" name="k8_psa_elevated" value="0"></td><td data-label="غير متأكد"><input type="radio" name="k8_psa_elevated" value="9"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- القسم الثالث: المواقف (8 عبارات ليكرت) -->
+      <div class="section-card">
+        <h2 class="section-title" id="s3_title">القسم الثالث: المواقف تجاه فحص سرطان البروستاتا</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="statement-col" id="col_statement_s3">العبارة</th>
+                <th id="col_sa_s3">أوافق بشدة</th>
+                <th id="col_a_s3">أوافق</th>
+                <th id="col_n_s3">محايد</th>
+                <th id="col_d_s3">لا أوافق</th>
+                <th id="col_sd_s3">لا أوافق بشدة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="statement-col" id="att1">1. أعتقد أن مناقشة الفوائد والأضرار المحتملة مع أحد المهنيين الصحيين تساعد على اتخاذ قرار مستنير بشأن فحص PSA.</td><td data-label="أوافق بشدة"><input type="radio" name="att1_discuss_benefits" value="5"></td><td data-label="أوافق"><input type="radio" name="att1_discuss_benefits" value="4"></td><td data-label="محايد"><input type="radio" name="att1_discuss_benefits" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att1_discuss_benefits" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att1_discuss_benefits" value="1"></td></tr>
+              <tr><td class="statement-col" id="att2">2. أعتقد أن فحص PSA قد يساعد على اكتشاف سرطان البروستاتا مبكراً لدى بعض الرجال.</td><td data-label="أوافق بشدة"><input type="radio" name="att2_detect_early" value="5"></td><td data-label="أوافق"><input type="radio" name="att2_detect_early" value="4"></td><td data-label="محايد"><input type="radio" name="att2_detect_early" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att2_detect_early" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att2_detect_early" value="1"></td></tr>
+              <tr><td class="statement-col" id="att3">3. سأفكر في إجراء فحص PSA إذا أوصى به المهني الصحي بعد مناقشة فوائده وأضراره معي.</td><td data-label="أوافق بشدة"><input type="radio" name="att3_consider_rec" value="5"></td><td data-label="أوافق"><input type="radio" name="att3_consider_rec" value="4"></td><td data-label="محايد"><input type="radio" name="att3_consider_rec" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att3_consider_rec" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att3_consider_rec" value="1"></td></tr>
+              <tr><td class="statement-col" id="att4">4. أعتقد أن الرجال الذين لا يعانون من أعراض بولية يمكنهم مناقشة فحص PSA مع ممارس صحي.</td><td data-label="أوافق بشدة"><input type="radio" name="att4_no_symptoms" value="5"></td><td data-label="أوافق"><input type="radio" name="att4_no_symptoms" value="4"></td><td data-label="محايد"><input type="radio" name="att4_no_symptoms" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att4_no_symptoms" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att4_no_symptoms" value="1"></td></tr>
+              <tr><td class="statement-col" id="att5">5. أشعر بالثقة في قدرتي على اتخاذ قرار مستنير بشأن فحص PSA.</td><td data-label="أوافق بشدة"><input type="radio" name="att5_confident" value="5"></td><td data-label="أوافق"><input type="radio" name="att5_confident" value="4"></td><td data-label="محايد"><input type="radio" name="att5_confident" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att5_confident" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att5_confident" value="1"></td></tr>
+              <tr><td class="statement-col" id="att6">6. أشعر بالقلق من أن تؤدي نتيجة PSA غير الطبيعية إلى فحوصات إضافية.</td><td data-label="أوافق بشدة"><input type="radio" name="att6_worry_tests" value="5"></td><td data-label="أوافق"><input type="radio" name="att6_worry_tests" value="4"></td><td data-label="محايد"><input type="radio" name="att6_worry_tests" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att6_worry_tests" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att6_worry_tests" value="1"></td></tr>
+              <tr><td class="statement-col" id="att7">7. أشعر بالقلق من أن يؤدي الفحص إلى علاج غير ضروري.</td><td data-label="أوافق بشدة"><input type="radio" name="att7_worry_treatment" value="5"></td><td data-label="أوافق"><input type="radio" name="att7_worry_treatment" value="4"></td><td data-label="محايد"><input type="radio" name="att7_worry_treatment" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att7_worry_treatment" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att7_worry_treatment" value="1"></td></tr>
+              <tr><td class="statement-col" id="att8">8. أعتقد أن قرار إجراء فحص PSA ينبغي أن يتخذ بشكل فردي بعد نقاش مع ممارس صحي.</td><td data-label="أوافق بشدة"><input type="radio" name="att8_individual_dec" value="5"></td><td data-label="أوافق"><input type="radio" name="att8_individual_dec" value="4"></td><td data-label="محايد"><input type="radio" name="att8_individual_dec" value="3"></td><td data-label="لا أوافق"><input type="radio" name="att8_individual_dec" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="att8_individual_dec" value="1"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- القسم الرابع: الممارسات الوقائية (8 ممارسات) -->
+      <div class="section-card">
+        <h2 class="section-title" id="s4_title">القسم الرابع: صحة البروستاتا والممارسات الوقائية</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="statement-col" id="col_statement_s4">الممارسة</th>
+                <th id="col_yes_s4">نعم</th>
+                <th id="col_no_s4">لا</th>
+                <th id="col_na_s4">لا ينطبق</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="statement-col" id="pr1">1. هل سبق أن أجريت فحص دم لمستضد البروستاتا النوعي (PSA)؟</td><td data-label="نعم"><input type="radio" name="prac1_ever_psa" value="1"></td><td data-label="لا"><input type="radio" name="prac1_ever_psa" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac1_ever_psa" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr2">2. هل ناقشت فحص سرطان البروستاتا مع ممارس صحي خلال الـ 12 شهراً الماضية؟</td><td data-label="نعم"><input type="radio" name="prac2_discussed_12m" value="1"></td><td data-label="لا"><input type="radio" name="prac2_discussed_12m" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac2_discussed_12m" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr3">3. إذا سبق أن كانت نتيجة PSA غير طبيعية، هل حضرت للمتابعة الموصى بها؟</td><td data-label="نعم"><input type="radio" name="prac3_followup" value="1"></td><td data-label="لا"><input type="radio" name="prac3_followup" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac3_followup" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr4">4. إذا عانيت من أعراض بولية أو مرتبطة بالبروستاتا، هل طلبت المشورة الطبية؟</td><td data-label="نعم"><input type="radio" name="prac4_sought_advice" value="1"></td><td data-label="لا"><input type="radio" name="prac4_sought_advice" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac4_sought_advice" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr5">5. هل حضرت فحصاً صحياً دورياً خلال الـ 12 شهراً الماضية؟</td><td data-label="نعم"><input type="radio" name="prac5_checkup_12m" value="1"></td><td data-label="لا"><input type="radio" name="prac5_checkup_12m" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac5_checkup_12m" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr6">6. هل تمارس نشاطاً بدنياً بانتظام؟</td><td data-label="نعم"><input type="radio" name="prac6_physical_act" value="1"></td><td data-label="لا"><input type="radio" name="prac6_physical_act" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac6_physical_act" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr7">7. هل تتبع نظاماً غذائياً متوازناً؟</td><td data-label="نعم"><input type="radio" name="prac7_diet" value="1"></td><td data-label="لا"><input type="radio" name="prac7_diet" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac7_diet" value="88"></td></tr>
+              <tr><td class="statement-col" id="pr8">8. هل تتجنب منتجات التبغ (السجائر، الشيشة، السجائر الإلكترونية)؟</td><td data-label="نعم"><input type="radio" name="prac8_avoid_tobacco" value="1"></td><td data-label="لا"><input type="radio" name="prac8_avoid_tobacco" value="0"></td><td data-label="لا ينطبق"><input type="radio" name="prac8_avoid_tobacco" value="88"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- القسم الخامس: الحواجز والمعوقات (8 عوامل ليكرت) -->
+      <div class="section-card">
+        <h2 class="section-title" id="s5_title">القسم الخامس: الحواجز والتنبؤات المتعلقة بقبول فحص PSA</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="statement-col" id="col_statement_s5">العامل المؤثر</th>
+                <th id="col_sa_s5">أوافق بشدة</th>
+                <th id="col_a_s5">أوافق</th>
+                <th id="col_n_s5">محايد</th>
+                <th id="col_d_s5">لا أوافق</th>
+                <th id="col_sd_s5">لا أوافق بشدة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="statement-col" id="bar1">1. قلة المعلومات عن الفوائد والأضرار المحتملة لفحص PSA ستجعلني أقل ميلاً للتفكير فيه.</td><td data-label="أوافق بشدة"><input type="radio" name="bar1_lack_info" value="5"></td><td data-label="أوافق"><input type="radio" name="bar1_lack_info" value="4"></td><td data-label="محايد"><input type="radio" name="bar1_lack_info" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar1_lack_info" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar1_lack_info" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar2">2. ستزيد توصية الممارس الصحي بعد مناقشة المنافع والمخاطر من احتمالية إجرائي للفحص.</td><td data-label="أوافق بشدة"><input type="radio" name="bar2_dr_rec" value="5"></td><td data-label="أوافق"><input type="radio" name="bar2_dr_rec" value="4"></td><td data-label="محايد"><input type="radio" name="bar2_dr_rec" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar2_dr_rec" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar2_dr_rec" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar3">3. ستجعل تكلفة الفحص أو غياب التغطية التأمينية إجراء فحص PSA صعباً بالنسبة لي.</td><td data-label="أوافق بشدة"><input type="radio" name="bar3_cost_ins" value="5"></td><td data-label="أوافق"><input type="radio" name="bar3_cost_ins" value="4"></td><td data-label="محايد"><input type="radio" name="bar3_cost_ins" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar3_cost_ins" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar3_cost_ins" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar4">4. سيجعل محدودية توفر مراكز الفحص أو بعدها الجغرافي إجراء الفحص صعباً بالنسبة لي.</td><td data-label="أوافق بشدة"><input type="radio" name="bar4_distance" value="5"></td><td data-label="أوافق"><input type="radio" name="bar4_distance" value="4"></td><td data-label="محايد"><input type="radio" name="bar4_distance" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar4_distance" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar4_distance" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar5">5. ستجعل صعوبة الحصول على موعد أو ضيق الوقت احتمالية إجرائي للفحص أقل.</td><td data-label="أوافق بشدة"><input type="radio" name="bar5_appt_time" value="5"></td><td data-label="أوافق"><input type="radio" name="bar5_appt_time" value="4"></td><td data-label="محايد"><input type="radio" name="bar5_appt_time" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar5_appt_time" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar5_appt_time" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar6">6. سيجعل قلقي من النتيجة غير الطبيعية والفحوصات اللاحقة احتمالية إجرائي للفحص أقل.</td><td data-label="أوافق بشدة"><input type="radio" name="bar6_worry_result" value="5"></td><td data-label="أوافق"><input type="radio" name="bar6_worry_result" value="4"></td><td data-label="محايد"><input type="radio" name="bar6_worry_result" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar6_worry_result" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar6_worry_result" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar7">7. سيجعل قلقي من عدم الراحة أثناء سحب عينة الدم احتمالية إجرائي للفحص أقل.</td><td data-label="أوافق بشدة"><input type="radio" name="bar7_blood_draw" value="5"></td><td data-label="أوافق"><input type="radio" name="bar7_blood_draw" value="4"></td><td data-label="محايد"><input type="radio" name="bar7_blood_draw" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar7_blood_draw" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar7_blood_draw" value="1"></td></tr>
+              <tr><td class="statement-col" id="bar8">8. سيجعل شعوري بالحرج عند مناقشة صحة البروستاتا احتمالية إجرائي للفحص أقل.</td><td data-label="أوافق بشدة"><input type="radio" name="bar8_embarrass" value="5"></td><td data-label="أوافق"><input type="radio" name="bar8_embarrass" value="4"></td><td data-label="محايد"><input type="radio" name="bar8_embarrass" value="3"></td><td data-label="لا أوافق"><input type="radio" name="bar8_embarrass" value="2"></td><td data-label="لا أوافق بشدة"><input type="radio" name="bar8_embarrass" value="1"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- القسم السادس: مصادر المعلومات (6 مصادر) -->
+      <div class="section-card">
+        <h2 class="section-title" id="s6_title">القسم السادس: مصادر المعلومات حول سرطان البروستاتا والفحص</h2>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="statement-col" id="col_statement_s6">المصدر</th>
+                <th id="col_yes_s6">نعم</th>
+                <th id="col_no_s6">لا</th>
+                <th id="col_unsure_s6">غير متأكد</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="statement-col" id="src1">1. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من وسائل الإعلام؟</td><td data-label="نعم"><input type="radio" name="src1_media" value="1"></td><td data-label="لا"><input type="radio" name="src1_media" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src1_media" value="9"></td></tr>
+              <tr><td class="statement-col" id="src2">2. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من صديق؟</td><td data-label="نعم"><input type="radio" name="src2_friend" value="1"></td><td data-label="لا"><input type="radio" name="src2_friend" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src2_friend" value="9"></td></tr>
+              <tr><td class="statement-col" id="src3">3. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من أحد الأقارب؟</td><td data-label="نعم"><input type="radio" name="src3_relative" value="1"></td><td data-label="لا"><input type="radio" name="src3_relative" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src3_relative" value="9"></td></tr>
+              <tr><td class="statement-col" id="src4">4. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من مقدمي الرعاية الصحية؟</td><td data-label="نعم"><input type="radio" name="src4_hc_worker" value="1"></td><td data-label="لا"><input type="radio" name="src4_hc_worker" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src4_hc_worker" value="9"></td></tr>
+              <tr><td class="statement-col" id="src5">5. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من متطوع في الصحة المجتمعية؟</td><td data-label="نعم"><input type="radio" name="src5_volunteer" value="1"></td><td data-label="لا"><input type="radio" name="src5_volunteer" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src5_volunteer" value="9"></td></tr>
+              <tr><td class="statement-col" id="src6">6. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من مصادر أخرى؟</td><td data-label="نعم"><input type="radio" name="src6_other" value="1"></td><td data-label="لا"><input type="radio" name="src6_other" value="0"></td><td data-label="غير متأكد"><input type="radio" name="src6_other" value="9"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- زر الإرسال وحالة العملية -->
+      <div class="submit-container">
+        <button type="submit" class="submit-btn" id="btnSubmit">إرسال الاستبيان</button>
+        <div id="statusMsg" class="branch-notice"></div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script>
+  let currentLang = 'ar';
+
+  // ضع هنا رابط Web App URL المنتهي بـ /exec بعد نشره في Google Apps Script
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVe8BpIDTrivhoUCzzCzDNWATTXUrMIIKXDP-627gTaQEX-gcLLygxO7lPGo_-BEQJFg/exec";
+
+  const dict = {
+    docTitle: { ar: "استبيان فحص سرطان البروستاتا | Prostate Cancer Screening Survey", en: "Prostate Cancer Screening Survey | Health Cluster" },
+    txtTitle: {
+      ar: "استبيان: معرفة ومواقف وممارسات فحص سرطان البروستاتا بين الرجال في الرياض",
+      en: "Questionnaire: Prostate Cancer Knowledge, Attitudes, and Preventive Practices among Middle-Aged Men in Riyadh"
+    },
+    txtDesc: {
+      ar: "عزيزي المشارك، شكرًا لك على تخصيص وقتك للمشاركة في هذا الاستبيان. نحن طلاب طب من جامعة المعرفة نجري دراسة حول الفحص المبكر لسرطان البروستاتا واستخدام اختبار المستضد البروستاتي النوعي (PSA) في مدينة الرياض، المملكة العربية السعودية. مشاركتك مهمة لفهم المعرفة الحالية والمواقف والممارسات المتعلقة بفحص سرطان البروستاتا. يرجى الإجابة على الأسئلة التالية بصدق وبأفضل ما تستطيع. سيتم الحفاظ على سرية جميع إجاباتك واستخدامها فقط لأغراض البحث.",
+      en: "Dear Participant, Thank you for taking the time to participate in this questionnaire. We are medical students from AlMaarefa University conducting a study about prostate cancer screening and the use of the prostate-specific antigen (PSA) test in Riyadh, Saudi Arabia. Your participation is crucial in helping us understand the current knowledge, attitudes, and practices regarding prostate cancer screening. Please answer the following questions honestly and to the best of your ability. All your responses will be kept confidential and used solely for research purposes."
+    },
+    txtConsentTitle: { ar: "الموافقة المستنيرة على المشاركة", en: "Informed Consent for Participation" },
+    txtConsentLabel: { ar: "هل توافق على المشاركة التطوعية في هذا البحث؟", en: "Do you agree to voluntarily participate in this research study?" },
+    opt_consent_yes: { ar: "نعم، أوافق على المشاركة", en: "Yes, I agree to participate" },
+    opt_consent_no: { ar: "لا أوافق", en: "No, I decline" },
+    consentDeclineNotice: {
+      ar: "شكراً لوقتك، نتمنى لك دوام الصحة والعافية. تم إغلاق الاستبيان.",
+      en: "Thank you for your time. The questionnaire has been closed."
+    },
+    s1_title: { ar: "القسم الأول: المعلومات الديموغرافية", en: "Section 1: Demographics" },
+    s1_q1: { ar: "1. العمر (بالسنوات):", en: "1. Age (in years):" },
+    s1_q2: { ar: "2. الجنس:", en: "2. Sex:" },
+    opt_male: { ar: "ذكر", en: "Male" },
+    opt_female: { ar: "أنثى", en: "Female" },
+    s1_q3: { ar: "3. الجنسية:", en: "3. Nationality:" },
+    opt_saudi: { ar: "سعودي", en: "Saudi" },
+    opt_non_saudi: { ar: "غير سعودي", en: "Non-Saudi" },
+    s1_q4: { ar: "4. المستوى التعليمي:", en: "4. Education Level:" },
+    opt_edu1: { ar: "شهادة ثانوية أو أقل", en: "High school graduate or less" },
+    opt_edu2: { ar: "جامعي", en: "University" },
+    opt_edu3: { ar: "دراسات عليا", en: "Post-graduate degree" },
+    s1_q5: { ar: "5. الحالة الاجتماعية:", en: "5. Marital Status:" },
+    opt_mar1: { ar: "متزوج", en: "Married" },
+    opt_mar2: { ar: "أعزب", en: "Single" },
+    opt_mar3: { ar: "مطلق / منفصل", en: "Divorced / Separated" },
+    opt_mar4: { ar: "أرمل", en: "Widowed" },
+    s1_q6: { ar: "6. حالة العمل:", en: "6. Employment Status:" },
+    opt_job1: { ar: "موظف بدوام كامل", en: "Employed full-time" },
+    opt_job2: { ar: "موظف بدوام جزئي", en: "Employed part-time" },
+    opt_job3: { ar: "عاطل عن العمل", en: "Unemployed" },
+    opt_job4: { ar: "متقاعد", en: "Retired" },
+    opt_job5: { ar: "طالب", en: "Student" },
+    opt_job6: { ar: "ربة منزل", en: "Homemaker" },
+    s1_q7: { ar: "7. التأمين الصحي:", en: "7. Health Insurance:" },
+    opt_ins_yes: { ar: "نعم", en: "Yes" },
+    opt_ins_no: { ar: "لا", en: "No" },
+
+    s2_title: { ar: "القسم الثاني: معرفة سرطان البروستاتا", en: "Section 2: Knowledge of Prostate Cancer (PC)" },
+    col_statement_s2: { ar: "البيان", en: "Statement" },
+    col_yes_s2: { ar: "نعم", en: "Yes" },
+    col_no_s2: { ar: "لا", en: "No" },
+    col_unsure_s2: { ar: "غير متأكد", en: "Not sure" },
+    k1: { ar: "1. هل سمعت عن سرطان البروستاتا؟", en: "1. Have you heard of prostate cancer?" },
+    k2: { ar: "2. هل يمكن أن يصاب الرجل بسرطان البروستاتا حتى إذا لم يكن لديه تاريخ عائلي للمرض؟", en: "2. Can prostate cancer occur in a man who has no family history of the disease?" },
+    k3: { ar: "3. هل يزداد خطر الإصابة بسرطان البروستاتا مع التقدم في العمر؟", en: "3. Does the risk of prostate cancer increase with age?" },
+    k4: { ar: "4. هل يزيد وجود قريب مصاب بسرطان البروستاتا من خطر إصابة الرجل؟", en: "4. Does having a close relative with prostate cancer increase a man's risk?" },
+    k5: { ar: "5. هل يمكن أن يكون سرطان البروستاتا في مراحله المبكرة موجودًا دون أعراض واضحة؟", en: "5. Can early prostate cancer be present without noticeable symptoms?" },
+    k6: { ar: "6. هل يمكن أن تنتج أعراض التبول عن أسباب غير سرطان البروستاتا؟", en: "6. Can urinary symptoms have causes other than prostate cancer?" },
+    k7: { ar: "7. هل يستدعي وجود دم في البول أو السائل المنوي تقييماً طبياً، دون أن يعني ذلك بالضرورة الإصابة بسرطان البروستاتا؟", en: "7. Can blood in the urine or semen require medical assessment without necessarily meaning prostate cancer?" },
+    k8: { ar: "8. هل اختبار مستضد البروستاتا النوعي (PSA) هو فحص دم، ولا تكفي النتيجة المرتفعة وحدها لتأكيد التشخيص؟", en: "8. Is the PSA test a blood test, with an elevated result alone not confirming a diagnosis of prostate cancer?" },
+
+    s3_title: { ar: "القسم الثالث: المواقف تجاه فحص سرطان البروستاتا", en: "Section 3: Attitudes Toward Prostate Cancer Screening" },
+    col_statement_s3: { ar: "العبارة", en: "Statement" },
+    col_sa_s3: { ar: "أوافق بشدة", en: "Strongly agree" },
+    col_a_s3: { ar: "أوافق", en: "Agree" },
+    col_n_s3: { ar: "محايد", en: "Neutral" },
+    col_d_s3: { ar: "لا أوافق", en: "Disagree" },
+    col_sd_s3: { ar: "لا أوافق بشدة", en: "Strongly disagree" },
+    att1: { ar: "1. أعتقد أن مناقشة الفوائد والأضرار المحتملة مع أحد المهنيين الصحيين تساعد على اتخاذ قرار مستنير بشأن فحص PSA.", en: "1. I believe discussing the potential benefits and harms with a healthcare professional helps men make an informed decision about PSA screening." },
+    att2: { ar: "2. أعتقد أن فحص PSA قد يساعد على اكتشاف سرطان البروستاتا مبكراً لدى بعض الرجال.", en: "2. I believe PSA screening may help detect prostate cancer earlier in some men." },
+    att3: { ar: "3. سأفكر في إجراء فحص PSA إذا أوصى به المهني الصحي بعد مناقشة فوائده وأضراره معي.", en: "3. I would consider PSA screening if my healthcare professional recommended it after discussing its possible benefits and harms with me." },
+    att4: { ar: "4. أعتقد أن الرجال الذين لا يعانون من أعراض بولية يمكنهم مناقشة فحص PSA مع ممارس صحي.", en: "4. I think men without urinary symptoms may still discuss PSA screening with a healthcare professional." },
+    att5: { ar: "5. أشعر بالثقة في قدرتي على اتخاذ قرار مستنير بشأن فحص PSA.", en: "5. I feel confident that I can make an informed decision about PSA screening." },
+    att6: { ar: "6. أشعر بالقلق من أن تؤدي نتيجة PSA غير الطبيعية إلى فحوصات إضافية.", en: "6. I worry that PSA screening could lead to additional tests after an abnormal result." },
+    att7: { ar: "7. أشعر بالقلق من أن يؤدي الفحص إلى علاج غير ضروري.", en: "7. I am concerned that screening could lead to unnecessary treatment." },
+    att8: { ar: "8. أعتقد أن قرار إجراء فحص PSA ينبغي أن يتخذ بشكل فردي بعد نقاش مع ممارس صحي.", en: "8. I believe the decision to have PSA screening should be made individually after discussion with a healthcare professional." },
+
+    s4_title: { ar: "القسم الرابع: صحة البروستاتا والممارسات الوقائية", en: "Section 4: Prostate Health and Preventive Practices" },
+    col_statement_s4: { ar: "الممارسة", en: "Practice" },
+    col_yes_s4: { ar: "نعم", en: "Yes" },
+    col_no_s4: { ar: "لا", en: "No" },
+    col_na_s4: { ar: "لا ينطبق", en: "Not applicable" },
+    pr1: { ar: "1. هل سبق أن أجريت فحص دم لمستضد البروستاتا النوعي (PSA)؟", en: "1. Have you ever had a blood test for PSA?" },
+    pr2: { ar: "2. هل ناقشت فحص سرطان البروستاتا مع ممارس صحي خلال الـ 12 شهراً الماضية؟", en: "2. In the past 12 months, have you discussed prostate cancer screening with a healthcare professional?" },
+    pr3: { ar: "3. إذا سبق أن كانت نتيجة PSA غير طبيعية، هل حضرت للمتابعة الموصى بها؟", en: "3. If you have had an abnormal PSA result, did you attend the recommended follow-up?" },
+    pr4: { ar: "4. إذا عانيت من أعراض بولية أو مرتبطة بالبروستاتا، هل طلبت المشورة الطبية؟", en: "4. If you experienced urinary or prostate-related symptoms, did you seek medical advice?" },
+    pr5: { ar: "5. هل حضرت فحصاً صحياً دورياً خلال الـ 12 شهراً الماضية؟", en: "5. In the past 12 months, have you attended a routine health check-up?" },
+    pr6: { ar: "6. هل تمارس نشاطاً بدنياً بانتظام؟", en: "6. Do you engage in regular physical activity?" },
+    pr7: { ar: "7. هل تتبع نظاماً غذائياً متوازناً؟", en: "7. Do you follow a balanced diet?" },
+    pr8: { ar: "8. هل تتجنب منتجات التبغ (السجائر، الشيشة، السجائر الإلكترونية)؟", en: "8. Do you avoid tobacco products, including cigarettes, shisha, and e-cigarettes?" },
+
+    s5_title: { ar: "القسم الخامس: الحواجز والتنبؤات المتعلقة بقبول فحص PSA", en: "Section 5: Barriers and Predictors of PSA Screening Uptake" },
+    col_statement_s5: { ar: "العامل المؤثر", en: "Factor influencing PSA screening uptake" },
+    col_sa_s5: { ar: "أوافق بشدة", en: "Strongly agree" },
+    col_a_s5: { ar: "أوافق", en: "Agree" },
+    col_n_s5: { ar: "محايد", en: "Neutral" },
+    col_d_s5: { ar: "لا أوافق", en: "Disagree" },
+    col_sd_s5: { ar: "لا أوافق بشدة", en: "Strongly disagree" },
+    bar1: { ar: "1. قلة المعلومات عن الفوائد والأضرار المحتملة لفحص PSA ستجعلني أقل ميلاً للتفكير فيه.", en: "1. Limited information about the potential benefits and harms of PSA screening would make me less likely to consider it." },
+    bar2: { ar: "2. ستزيد توصية الممارس الصحي بعد مناقشة المنافع والمخاطر من احتمالية إجرائي للفحص.", en: "2. A healthcare professional's recommendation after discussing benefits and harms would make me more likely to consider PSA screening." },
+    bar3: { ar: "3. ستجعل تكلفة الفحص أو غياب التغطية التأمينية إجراء فحص PSA صعباً بالنسبة لي.", en: "3. The cost of screening or lack of insurance coverage would make it difficult for me to undergo PSA screening." },
+    bar4: { ar: "4. سيجعل محدودية توفر مراكز الفحص أو بعدها الجغرافي إجراء الفحص صعباً بالنسبة لي.", en: "4. Limited availability or distance to a screening facility would make it difficult for me to undergo screening." },
+    bar5: { ar: "5. ستجعل صعوبة الحصول على موعد أو ضيق الوقت احتمالية إجرائي للفحص أقل.", en: "5. Difficulty getting an appointment or finding time would make me less likely to undergo screening." },
+    bar6: { ar: "6. سيجعل قلقي من النتيجة غير الطبيعية والفحوصات اللاحقة احتمالية إجرائي للفحص أقل.", en: "6. Worry about an abnormal result and possible follow-up tests would make me less likely to undergo screening." },
+    bar7: { ar: "7. سيجعل قلقي من عدم الراحة أثناء سحب عينة الدم احتمالية إجرائي للفحص أقل.", en: "7. Concern about discomfort from the blood test would make me less likely to undergo screening." },
+    bar8: { ar: "8. سيجعل شعوري بالحرج عند مناقشة صحة البروستاتا احتمالية إجرائي للفحص أقل.", en: "8. Feeling embarrassed discussing prostate health would make me less likely to undergo screening." },
+
+    s6_title: { ar: "القسم السادس: مصادر المعلومات حول سرطان البروستاتا والفحص", en: "Section 6: Sources of Information About Prostate Cancer and Screening" },
+    col_statement_s6: { ar: "المصدر", en: "Statement" },
+    col_yes_s6: { ar: "نعم", en: "Yes" },
+    col_no_s6: { ar: "لا", en: "No" },
+    col_unsure_s6: { ar: "غير متأكد", en: "Not sure" },
+    src1: { ar: "1. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من وسائل الإعلام؟", en: "1. Have you ever received information about prostate cancer from mass media?" },
+    src2: { ar: "2. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من صديق؟", en: "2. Have you ever received information about prostate cancer from a friend?" },
+    src3: { ar: "3. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من أحد الأقارب؟", en: "3. Have you ever received information about prostate cancer from a relative?" },
+    src4: { ar: "4. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من مقدمي الرعاية الصحية؟", en: "4. Have you ever received information about prostate cancer from healthcare workers?" },
+    src5: { ar: "5. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من متطوع في الصحة المجتمعية؟", en: "5. Have you ever received information about prostate cancer from a community health volunteer?" },
+    src6: { ar: "6. هل سبق أن تلقيت معلومات عن سرطان البروستاتا من مصادر أخرى؟", en: "6. Have you ever received information about prostate cancer from other sources?" },
+
+    btnSubmit: { ar: "إرسال الاستبيان", en: "Submit Questionnaire" }
+  };
+
+  // دالة التبديل الفوري للموافقة المستنيرة
+  function handleConsentChange(val) {
+    const consentDeclineNotice = document.getElementById('consentDeclineNotice');
+    const surveyBody = document.getElementById('surveyBody');
+
+    if (val === '1') {
+      consentDeclineNotice.style.display = 'none';
+      surveyBody.style.display = 'block';
+      // انتقال فوري وسلس للقسم الأول
+      document.getElementById('s1_title').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      consentDeclineNotice.style.display = 'block';
+      surveyBody.style.display = 'none';
+    }
+  }
+
+  // تحديث نصوص خلايا الجوال تلقائياً
+  function updateMobileLabels() {
+    const labelsMap = {
+      "1": currentLang === 'ar' ? "نعم" : "Yes",
+      "0": currentLang === 'ar' ? "لا" : "No",
+      "9": currentLang === 'ar' ? "غير متأكد" : "Not sure",
+      "88": currentLang === 'ar' ? "لا ينطبق" : "Not applicable",
+      "5": currentLang === 'ar' ? "أوافق بشدة" : "Strongly agree",
+      "4": currentLang === 'ar' ? "أوافق" : "Agree",
+      "3": currentLang === 'ar' ? "محايد" : "Neutral",
+      "2": currentLang === 'ar' ? "لا أوافق" : "Disagree"
+    };
+
+    document.querySelectorAll('td[data-label]').forEach(td => {
+      const radio = td.querySelector('input[type="radio"]');
+      if (radio && labelsMap[radio.value]) {
+        td.setAttribute('data-label', labelsMap[radio.value]);
+      }
+    });
+  }
+
+  // دالة تبديل اللغة الفورية
+  function toggleLanguage() {
+    currentLang = currentLang === 'ar' ? 'en' : 'ar';
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('langSwitcher').innerText = currentLang === 'ar' ? 'Switch to English' : 'تغيير إلى العربية';
+
+    for (const key in dict) {
+      const el = document.getElementById(key);
+      if (el) {
+        el.innerText = dict[key][currentLang];
+      }
+    }
+    updateMobileLabels();
+  }
+
+  // دالة الإرسال وحفظ البيانات المرمزة في Google Sheets
+  async function handleFormSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmit');
+    const status = document.getElementById('statusMsg');
+
+    btn.disabled = true;
+    btn.innerText = currentLang === 'ar' ? 'جارٍ الإرسال والتسجيل...' : 'Submitting...';
+
+    const formData = new FormData(e.target);
+    const dataObj = {};
+    formData.forEach((value, key) => {
+      dataObj[key] = value;
+    });
+
+    dataObj['survey_lang'] = currentLang;
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dataObj)
+      });
+
+      status.className = 'branch-notice success';
+      status.style.display = 'block';
+      status.innerText = currentLang === 'ar' 
+        ? 'تم استلام إجاباتك بنجاح. شكراً لمشاركتك القيّمة!' 
+        : 'Thank you! Your response has been recorded successfully.';
+      
+      e.target.reset();
+      document.getElementById('surveyBody').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      status.className = 'branch-notice warning';
+      status.style.display = 'block';
+      status.innerText = currentLang === 'ar' 
+        ? 'حدث خطأ أثناء الاتصال بالقاعدة. يرجى إعادة المحاولة.' 
+        : 'Error submitting form. Please try again.';
+    } finally {
+      btn.disabled = false;
+      btn.innerText = dict.btnSubmit[currentLang];
+    }
+  }
+
+  updateMobileLabels();
+</script>
+
+</body>
+</html>
